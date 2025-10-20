@@ -1,12 +1,12 @@
 package uz.mkh.model.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,25 +15,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
-@Table(name = "person", schema = "uzum-internship")
+@Table(name = "car", schema = "uzum-internship")
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
-public class PersonEntity {
+public class CarEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "name")
-    private String name;
-    @Column(name = "birthdate")
-    private LocalDate birthdate;
+    @Column(name = "model")
+    private String model;
+    @Column(name = "horsepower")
+    private Long horsePower;
+    @ManyToOne
+    @JoinColumn(name = "ownerid")
+    private PersonEntity owner;
+
+
 }

@@ -22,15 +22,13 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Long getAllCount() {
-        List<PersonEntity> person = repository.findAll();
-        return (long) person.size();
+        List<PersonEntity> personList = repository.findAll();
+        return (long) personList.size();
     }
 
     @Override
     public ServiceResponse<PersonDto> createPerson(@NotNull PersonRequest request) {
         PersonEntity person = mapper.toEntity(request);
-        System.out.println(request);
-        System.out.println(person);
         person = repository.save(person);
         PersonDto dto = mapper.toDto(person);
 
