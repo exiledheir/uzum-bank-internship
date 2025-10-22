@@ -1,7 +1,7 @@
 package uz.mkh.service.impl;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 import uz.mkh.mapper.CarMapper;
@@ -18,7 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CarServiceImpl implements CarService {
 
     private final CarRepository caRepository;

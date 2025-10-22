@@ -28,9 +28,4 @@ public class PersonController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-//    @GetMapping("/getAll")
-//    public ResponseEntity<Long> getPersonCount() {
-//        Long response = personService.getAllCount();
-//        return ResponseEntity.ok(response);
-//    }
 }

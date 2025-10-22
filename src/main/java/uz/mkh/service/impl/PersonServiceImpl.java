@@ -1,7 +1,7 @@
 package uz.mkh.service.impl;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.mkh.mapper.PersonMapper;
 import uz.mkh.model.dto.PersonDto;
@@ -14,7 +14,7 @@ import uz.mkh.service.PersonService;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository repository;
