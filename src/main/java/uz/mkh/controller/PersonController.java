@@ -26,7 +26,7 @@ public class PersonController {
     @PostMapping("/person")
     public ResponseEntity<Void> createPerson(@RequestBody @Valid PersonRequest request) {
         ServiceResponse<PersonDto> response = personService.createPerson(request);
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @GetMapping("/personwithcars/{personId}")
