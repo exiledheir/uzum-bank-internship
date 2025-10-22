@@ -3,17 +3,14 @@ package uz.mkh.model.request;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@ToString
+@Data
+@AllArgsConstructor
 public class PersonRequest {
     @NotNull(message = "person name cant be null")
     @NotBlank(message = "Person name should not be blank")

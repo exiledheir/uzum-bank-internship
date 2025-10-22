@@ -1,16 +1,10 @@
 package uz.mkh.model.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
-@ToString
-@NoArgsConstructor
 public class CarDto {
     private Long id;
     private String model;
