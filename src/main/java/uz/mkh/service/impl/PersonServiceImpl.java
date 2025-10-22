@@ -3,6 +3,9 @@ package uz.mkh.service.impl;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import uz.mkh.exception.CarAlreadyExistsException;
+import uz.mkh.exception.PersonAlreadyExistsException;
 import uz.mkh.mapper.PersonMapper;
 import uz.mkh.model.dto.PersonDto;
 import uz.mkh.model.entity.PersonEntity;
@@ -27,7 +30,11 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional
     public ServiceResponse<PersonDto> createPerson(@NotNull PersonRequest request) {
+        if (repository.existsById(request.getId()))
+            throw new PersonAlreadyExistsException("Person with id: " + request.getId() + ", already exists");
+
         PersonEntity person = mapper.toEntity(request);
         person = repository.save(person);
         PersonDto dto = mapper.toDto(person);
