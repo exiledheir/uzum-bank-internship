@@ -61,4 +61,8 @@ public class PersonServiceImpl implements PersonService {
         response.setCars(cars);
         return ServiceResponse.createSuccess(response);
     }
+
+    public void clearData() {
+        personRepository.deleteAllInBatch();
+    }
 }

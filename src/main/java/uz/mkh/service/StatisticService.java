@@ -5,4 +5,6 @@ import uz.mkh.model.response.StatisticResponse;
 
 public interface StatisticService {
     ServiceResponse<StatisticResponse> getStatistics();
+
+    void clearDatabase();
 }
