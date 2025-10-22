@@ -1,6 +1,8 @@
 package uz.mkh.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uz.mkh.model.response.ServiceResponse;
 import uz.mkh.model.response.StatisticResponse;
@@ -15,9 +17,11 @@ public class StatisticServiceImpl implements StatisticService {
     private final CarService carService;
     private final PersonService personService;
     private final CarRepository carRepository;
+    private final Logger logger = LoggerFactory.getLogger(StatisticServiceImpl.class);
 
     @Override
     public ServiceResponse<StatisticResponse> getStatistics() {
+        logger.info("retrieving statistics");
         Long carCount = carService.getAllCount();
         Long personCount = personService.getAllCount();
         Long vendorCount = carRepository.findAll()
@@ -30,12 +34,14 @@ public class StatisticServiceImpl implements StatisticService {
                 .personCount(personCount)
                 .uniqueVendorCount(vendorCount)
                 .build();
+        logger.info("statistics retrieved");
 
         return ServiceResponse.createSuccess(response);
     }
 
     @Override
     public void clearDatabase() {
+        logger.warn("clearing tables in database");
         carService.clearData();
         personService.clearData();
     }

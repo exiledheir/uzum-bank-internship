@@ -2,12 +2,13 @@ package uz.mkh.service.impl;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.mkh.exception.CarAlreadyExistsException;
 import uz.mkh.exception.DataDoesntExistException;
 import uz.mkh.exception.InvalidAgeException;
-import uz.mkh.exception.PersonNotFoundException;
 import uz.mkh.mapper.CarMapper;
 import uz.mkh.model.dto.CarDto;
 import uz.mkh.model.entity.CarEntity;
@@ -28,9 +29,11 @@ public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
     private final PersonRepository personRepository;
     private final CarMapper carMapper;
+    private final Logger logger = LoggerFactory.getLogger(CarServiceImpl.class);
 
     @Override
     public Long getAllCount() {
+        logger.info("retrieving car amount");
         List<CarEntity> carList = carRepository.findAll();
         return (long) carList.size();
     }
@@ -38,24 +41,33 @@ public class CarServiceImpl implements CarService {
     @Override
     @Transactional
     public ServiceResponse<CarDto> createCar(@NotNull CarRequest request) {
-        if (carRepository.existsById(request.getId()))
+        logger.info("creating car entity ");
+        if (carRepository.existsById(request.getId())) {
+            logger.error("car already exists");
             throw new CarAlreadyExistsException("Car with id: " + request.getId() + ", already exists");
-
+        }
         PersonEntity person = personRepository.findById(request.getOwnerId()).
-                orElseThrow(() -> new DataDoesntExistException("Person with id: " + request.getOwnerId() + ", doesnt exists"));
+                orElseThrow(() -> {
+                    logger.error("person doesnt exists");
+                    return new DataDoesntExistException("Person with id: " + request.getOwnerId() + ", doesnt exists");
+                });
 
         int age = LocalDate.now().compareTo(person.getBirthdate());
-        if (age < 18)
+        if (age < 18) {
+            logger.error("person with age lower than 18 cant own a car");
             throw new InvalidAgeException("Person with age lower 18 cant own a car. Your age: " + (age > 0 ? age : 0));
+        }
         CarEntity car = carMapper.toEntity(request);
         car.setOwner(person);
         car = carRepository.save(car);
         CarDto dto = carMapper.toDto(car);
 
+        logger.info("car created and saved ");
         return ServiceResponse.createSuccess(dto);
     }
 
     public void clearData(){
+        logger.warn("clearing car table in database");
         carRepository.deleteAllInBatch();
     }
 }
