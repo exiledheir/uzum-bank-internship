@@ -3,6 +3,7 @@ plugins {
 	id("org.springframework.boot") version "3.5.6"
 	id("io.spring.dependency-management") version "1.1.7"
 	id ("org.flywaydb.flyway") version "10.0.0"
+	jacoco
 }
 
 group = "uz.mkh"
@@ -45,4 +46,17 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.test {
+	finalizedBy(tasks.jacocoTestReport, tasks.jacocoTestCoverageVerification)
+}
+tasks.jacocoTestReport{
+
+	reports{
+		csv.required = false
+		xml.required = true
+		html.required = true
+	}
+	dependsOn(tasks.test)
 }
