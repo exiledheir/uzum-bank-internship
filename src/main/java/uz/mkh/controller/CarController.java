@@ -2,7 +2,6 @@ package uz.mkh.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +23,6 @@ public class CarController {
     @PostMapping("/car")
     public ResponseEntity<Void> createCar(@RequestBody @Valid CarRequest request) {
         ServiceResponse<CarDto> response = service.createCar(request);
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }
