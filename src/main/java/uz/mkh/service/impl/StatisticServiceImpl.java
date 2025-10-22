@@ -33,4 +33,10 @@ public class StatisticServiceImpl implements StatisticService {
 
         return ServiceResponse.createSuccess(response);
     }
+
+    @Override
+    public void clearDatabase() {
+        carService.clearData();
+        personService.clearData();
+    }
 }

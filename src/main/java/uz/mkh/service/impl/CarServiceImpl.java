@@ -54,4 +54,8 @@ public class CarServiceImpl implements CarService {
 
         return ServiceResponse.createSuccess(dto);
     }
+
+    public void clearData(){
+        carRepository.deleteAllInBatch();
+    }
 }

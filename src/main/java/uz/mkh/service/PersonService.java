@@ -12,4 +12,7 @@ public interface PersonService {
     ServiceResponse<PersonDto> createPerson(@NotNull PersonRequest request);
 
     ServiceResponse<PersonResponse> getPersonWithCars(@NotNull Long id);
+
+    void clearData();
+
 }
