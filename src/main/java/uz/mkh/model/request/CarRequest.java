@@ -9,11 +9,13 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CarRequest {
+    @NotNull(message = "id cant be null")
+    private Long id;
     @NotNull(message = "model cant be null")
     @NotBlank(message = "model cant be empty or blank")
     private String model;
     @NotNull(message = "horsePower cant be null")
-    @Min(value = 0)
+    @Min(value = 1)
     private Long horsePower;
     @NotNull(message = "Owner cant be null")
     private Long ownerId;

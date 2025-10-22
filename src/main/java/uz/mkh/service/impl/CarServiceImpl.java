@@ -3,7 +3,11 @@ package uz.mkh.service.impl;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
+import org.springframework.transaction.annotation.Transactional;
+import uz.mkh.exception.CarAlreadyExistsException;
+import uz.mkh.exception.DataDoesntExistException;
+import uz.mkh.exception.InvalidAgeException;
+import uz.mkh.exception.PersonNotFoundException;
 import uz.mkh.mapper.CarMapper;
 import uz.mkh.model.dto.CarDto;
 import uz.mkh.model.entity.CarEntity;
@@ -21,27 +25,31 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CarServiceImpl implements CarService {
 
-    private final CarRepository caRepository;
+    private final CarRepository carRepository;
     private final PersonRepository personRepository;
     private final CarMapper carMapper;
 
     @Override
     public Long getAllCount() {
-        List<CarEntity> carList = caRepository.findAll();
+        List<CarEntity> carList = carRepository.findAll();
         return (long) carList.size();
     }
 
     @Override
+    @Transactional
     public ServiceResponse<CarDto> createCar(@NotNull CarRequest request) {
+        if (carRepository.existsById(request.getId()))
+            throw new CarAlreadyExistsException("Car with id: " + request.getId() + ", already exists");
 
-        PersonEntity person = personRepository.findById(request.getOwnerId()).orElseThrow(() -> new NotFoundException("Ownder with this id not found"));
+        PersonEntity person = personRepository.findById(request.getOwnerId()).
+                orElseThrow(() -> new DataDoesntExistException("Person with id: " + request.getOwnerId() + ", doesnt exists"));
 
-        if (LocalDate.now().compareTo(person.getBirthdate()) < 18)
-            throw new IllegalArgumentException("Person with age lower 18 cant buy car");
-
+        int age = LocalDate.now().compareTo(person.getBirthdate());
+        if (age < 18)
+            throw new InvalidAgeException("Person with age lower 18 cant own a car. Your age: " + (age > 0 ? age : 0));
         CarEntity car = carMapper.toEntity(request);
         car.setOwner(person);
-        car = caRepository.save(car);
+        car = carRepository.save(car);
         CarDto dto = carMapper.toDto(car);
 
         return ServiceResponse.createSuccess(dto);

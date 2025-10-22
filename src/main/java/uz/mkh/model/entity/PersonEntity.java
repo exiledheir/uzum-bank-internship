@@ -22,7 +22,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class PersonEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @EqualsAndHashCode.Exclude
     private Long id;
