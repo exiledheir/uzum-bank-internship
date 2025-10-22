@@ -2,6 +2,8 @@ package uz.mkh.service.impl;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.mkh.exception.PersonAlreadyExistsException;
@@ -28,9 +30,11 @@ public class PersonServiceImpl implements PersonService {
     private final CarRepository carRepository;
     private final PersonMapper personMapper;
     private final CarMapper carMapper;
+    private final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
 
     @Override
     public Long getAllCount() {
+        logger.info("retrieving person amount");
         List<PersonEntity> personList = personRepository.findAll();
         return (long) personList.size();
     }
@@ -38,20 +42,28 @@ public class PersonServiceImpl implements PersonService {
     @Override
     @Transactional
     public ServiceResponse<PersonDto> createPerson(@NotNull PersonRequest request) {
-        if (personRepository.existsById(request.getId()))
+        logger.info("creating person entity");
+        if (personRepository.existsById(request.getId())) {
+            logger.error("Person with id: " + request.getId() + " exists");
             throw new PersonAlreadyExistsException("Person with id: " + request.getId() + ", already exists");
+        }
 
         PersonEntity person = personMapper.toEntity(request);
         person = personRepository.save(person);
         PersonDto dto = personMapper.toDto(person);
 
+        logger.info("person entity created and saved in database");
         return ServiceResponse.createSuccess(dto);
     }
 
     @Override
     public ServiceResponse<PersonResponse> getPersonWithCars(@NotNull Long id) {
+        logger.info("retrieving person information");
         PersonEntity person = personRepository.findById(id).
-                orElseThrow(() -> new PersonNotFoundException("Person with id: " + id + ", not found"));
+                orElseThrow(() -> {
+                    logger.error("person doesnt exists");
+                    return new PersonNotFoundException("Person with id: " + id + ", not found");
+                });
 
         PersonResponse response = personMapper.toResponse(person);
         List<CarDto> cars = carRepository.findCarByOwnerIdIs(id)
@@ -59,10 +71,12 @@ public class PersonServiceImpl implements PersonService {
                 .map(carMapper::toDto)
                 .toList();
         response.setCars(cars);
+        logger.info("person information retrieved");
         return ServiceResponse.createSuccess(response);
     }
 
     public void clearData() {
+        logger.warn("clearing person table in database");
         personRepository.deleteAllInBatch();
     }
 }
