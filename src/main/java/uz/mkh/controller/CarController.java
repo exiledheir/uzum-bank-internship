@@ -1,5 +1,9 @@
 package uz.mkh.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,9 +21,15 @@ import uz.mkh.service.CarService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
+@Tag(name = "Car Management", description = "Manages cars in database")
 public class CarController {
     private final CarService service;
 
+    @Operation(summary = "Creates car entity and saves it in database", description = "Returns empty body")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully created"),
+            @ApiResponse(responseCode = "400", description = "Bad request, validation error")}
+    )
     @PostMapping("/car")
     public ResponseEntity<Void> createCar(@RequestBody @Valid CarRequest request) {
         ServiceResponse<CarDto> response = service.createCar(request);
