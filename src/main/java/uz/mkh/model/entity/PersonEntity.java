@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "person", schema = "uzum-internship")
+@Table(name = "person")
 @Data
 @Builder
 @NoArgsConstructor
