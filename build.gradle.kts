@@ -27,18 +27,17 @@ repositories {
 }
 
 dependencies {
-	runtimeOnly("org.flywaydb:flyway-database-postgresql:11.14.1")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.postgresql:postgresql:42.7.3")
-	runtimeOnly("org.flywaydb:flyway-database-postgresql:10.15.0")
 	implementation("org.mapstruct:mapstruct:1.6.3")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.mapstruct:mapstruct-processor:1.6.3")
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("org.postgresql:postgresql")
+	runtimeOnly("org.flywaydb:flyway-database-postgresql:10.15.0")
 	annotationProcessor("org.projectlombok:lombok")
-	implementation("org.mapstruct:mapstruct-processor:1.6.3")
 	annotationProcessor ("org.mapstruct:mapstruct-processor:1.6.3")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("com.h2database:h2")

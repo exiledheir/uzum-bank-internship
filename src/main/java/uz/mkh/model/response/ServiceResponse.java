@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ServiceResponse<P>{
+public class ServiceResponse<P> {
     private P payload;
     private String message;
     private boolean success;

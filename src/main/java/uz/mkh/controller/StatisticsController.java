@@ -31,7 +31,7 @@ public class StatisticsController {
     @Operation(summary = "Clears data from database", description = "Returns empty body")
     @ApiResponse(responseCode = "200", description = "Successfully cleared database")
     @GetMapping("/clear")
-    public ResponseEntity<Void> clearDatabase(){
+    public ResponseEntity<Void> clearDatabase() {
         statisticService.clearDatabase();
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
