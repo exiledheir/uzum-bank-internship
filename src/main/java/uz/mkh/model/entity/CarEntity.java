@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "car", schema = "uzum-internship")
+@Table(name = "car")
 @Data
 @Builder
 @AllArgsConstructor

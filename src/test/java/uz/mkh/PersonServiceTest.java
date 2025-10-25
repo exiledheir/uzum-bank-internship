@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import uz.mkh.exception.PersonAlreadyExistsException;
 import uz.mkh.exception.PersonNotFoundException;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
+@ActiveProfiles("test")
 public class PersonServiceTest {
 
     @Autowired
@@ -32,24 +34,24 @@ public class PersonServiceTest {
     @BeforeEach
     void setUp() {
         PersonRequest personRequest = PersonRequest.builder()
-                .id(20000L)
+                .id(1L)
                 .name("Mukhammadjon")
                 .birthdate(LocalDate.of(2002, 12, 30))
                 .build();
         personService.createPerson(personRequest);
 
         CarRequest request1 = CarRequest.builder()
-                .id(20000L)
+                .id(1L)
                 .model("Kia-K5")
                 .horsePower(399L)
-                .ownerId(20000L)
+                .ownerId(1L)
                 .build();
 
         CarRequest request2 = CarRequest.builder()
-                .id(20001L)
+                .id(2L)
                 .model("BMW-X5")
                 .horsePower(343L)
-                .ownerId(20000L)
+                .ownerId(1L)
                 .build();
 
         carService.createCar(request1);
@@ -60,7 +62,7 @@ public class PersonServiceTest {
     void createPersonSuccessful() {
         long initial = personService.getAllCount();
         PersonRequest personRequest = PersonRequest.builder()
-                .id(30000L)
+                .id(2L)
                 .name("Gulomjon")
                 .birthdate(LocalDate.of(2023, 12, 30))
                 .build();
@@ -72,7 +74,7 @@ public class PersonServiceTest {
     @Test
     void createExistingPerson() {
         PersonRequest personRequest = PersonRequest.builder()
-                .id(20000L)
+                .id(1L)
                 .name("Gulomjon")
                 .birthdate(LocalDate.of(2023, 12, 30))
                 .build();
@@ -84,7 +86,7 @@ public class PersonServiceTest {
 
     @Test
     void getPersonWithCarsSuccessful() {
-        ServiceResponse<PersonResponse> response = personService.getPersonWithCars(20000L);
+        ServiceResponse<PersonResponse> response = personService.getPersonWithCars(1L);
 
         PersonResponse person = response.getPayload();
 
@@ -101,13 +103,13 @@ public class PersonServiceTest {
     @Test
     void getPersonWithCars_PersonWithNoCars() {
         PersonRequest personRequest = PersonRequest.builder()
-                .id(40000L)
+                .id(2L)
                 .name("Gulomjon")
                 .birthdate(LocalDate.of(2002, 12, 30))
                 .build();
         personService.createPerson(personRequest);
 
-        ServiceResponse<PersonResponse> response = personService.getPersonWithCars(40000L);
+        ServiceResponse<PersonResponse> response = personService.getPersonWithCars(2L);
         PersonResponse person = response.getPayload();
 
         assertEquals(0, person.getCars().size());

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import uz.mkh.exception.CarAlreadyExistsException;
 import uz.mkh.exception.DataDoesntExistException;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
+@ActiveProfiles("test")
 public class CarServiceTest {
 
     @Autowired
@@ -32,18 +34,26 @@ public class CarServiceTest {
     @BeforeEach
     void setUp() {
         PersonRequest personRequest = PersonRequest.builder()
-                .id(20000L)
+                .id(1L)
                 .name("Mukhammadjon")
                 .birthdate(LocalDate.of(2002, 12, 30))
                 .build();
 
         PersonRequest personLower18 = PersonRequest.builder()
-                .id(30000L)
+                .id(2L)
                 .name("Sardor")
                 .birthdate(LocalDate.of(2012, 12, 30))
                 .build();
         personService.createPerson(personRequest);
         personService.createPerson(personLower18);
+
+        CarRequest car1 = CarRequest.builder()
+                .id(1L)
+                .model("Kia-K5")
+                .horsePower(399L)
+                .ownerId(1L)
+                .build();
+        carService.createCar(car1);
 
     }
 
@@ -51,10 +61,10 @@ public class CarServiceTest {
     void createCarSuccessful() {
         long initial = carService.getAllCount();
         CarRequest request = CarRequest.builder()
-                .id(20000L)
+                .id(2L)
                 .model("Kia-K5")
                 .horsePower(399L)
-                .ownerId(20000L)
+                .ownerId(1L)
                 .build();
         carService.createCar(request);
 
@@ -64,7 +74,7 @@ public class CarServiceTest {
     @Test
     void createCarWithNotExistingUser() {
         CarRequest request = CarRequest.builder()
-                .id(20000L)
+                .id(2L)
                 .model("Kia-K5")
                 .horsePower(399L)
                 .ownerId(100L)
@@ -79,10 +89,10 @@ public class CarServiceTest {
     @Test
     void createCarWithUserAgeLower18() {
         CarRequest request = CarRequest.builder()
-                .id(20000L)
+                .id(2L)
                 .model("Kia-K5")
                 .horsePower(399L)
-                .ownerId(30000L)
+                .ownerId(2L)
                 .build();
 
         assertThatExceptionOfType(InvalidAgeException.class).isThrownBy(() -> {
@@ -96,7 +106,7 @@ public class CarServiceTest {
                 .id(1L)
                 .model("Kia-K5")
                 .horsePower(399L)
-                .ownerId(3L)
+                .ownerId(2L)
                 .build();
         assertThatExceptionOfType(CarAlreadyExistsException.class).isThrownBy(() -> {
             carService.createCar(request);
