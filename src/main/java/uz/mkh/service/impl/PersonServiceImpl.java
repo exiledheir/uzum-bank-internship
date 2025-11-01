@@ -32,6 +32,11 @@ public class PersonServiceImpl implements PersonService {
     private final CarMapper carMapper;
     private final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
 
+    /**
+     * Fetches amount of people from database
+     *
+     * @return Long
+     */
     @Override
     @Transactional(readOnly = true)
     public Long getAllCount() {
@@ -40,6 +45,12 @@ public class PersonServiceImpl implements PersonService {
         return (long) personList.size();
     }
 
+    /**
+     * Creates person entity, validates it and saves in database
+     *
+     * @param request type PersonRequest
+     * @return ServiceResponse<PersonDto>
+     */
     @Override
     @Transactional
     public ServiceResponse<PersonDto> createPerson(@NotNull PersonRequest request) {
@@ -54,6 +65,12 @@ public class PersonServiceImpl implements PersonService {
         return ServiceResponse.createSuccess(dto);
     }
 
+    /**
+     * Method to get Person data and fetches all his cars
+     *
+     * @param id type Long
+     * @return ServiceResponse<PersonResponse>
+     */
     @Override
     @Transactional(readOnly = true)
     public ServiceResponse<PersonResponse> getPersonWithCars(@NotNull Long id) {
@@ -71,6 +88,13 @@ public class PersonServiceImpl implements PersonService {
         return ServiceResponse.createSuccess(response);
     }
 
+    /**
+     * Helper method. Validates person if he exists or not
+     *
+     * @param id type Long
+     * @return PersonEntity
+     * @throws DataDoesntExistException if person with given id is not found
+     */
     private PersonEntity validatePerson(Long id) {
         return personRepository.findById(id).orElseThrow(() -> {
             logger.error("person doesnt exists");
@@ -78,6 +102,12 @@ public class PersonServiceImpl implements PersonService {
         });
     }
 
+    /**
+     * Helper method. To check if new person already exists in database
+     *
+     * @param request type PersonRequeset
+     * @throws PersonAlreadyExistsException if person with given name and birthdate already exists
+     */
     private void validatePersonExist(PersonRequest request) {
         if (personRepository.existsByName(request.getName()) && personRepository.existsByBirthdate(request.getBirthdate())) {
             logger.error("Person with name: " + request.getName() + ", birthdate: " + request.getBirthdate() + " exists");
@@ -85,6 +115,9 @@ public class PersonServiceImpl implements PersonService {
         }
     }
 
+    /**
+     * Clears person and car table from data
+     */
     @Override
     @Transactional
     public void clearData() {

@@ -18,6 +18,11 @@ public class StatisticServiceImpl implements StatisticService {
     private final PersonService personService;
     private final Logger logger = LoggerFactory.getLogger(StatisticServiceImpl.class);
 
+    /**
+     * Method to get all statistics: amount of cars, amount of people and amount of unique vendors
+     *
+     * @return ServiceResponse<StatisticResponse>
+     */
     @Override
     @Transactional(readOnly = true)
     public ServiceResponse<StatisticResponse> getStatistics() {
@@ -35,6 +40,9 @@ public class StatisticServiceImpl implements StatisticService {
         return ServiceResponse.createSuccess(response);
     }
 
+    /**
+     * Clears person and car table from data
+     */
     @Override
     @Transactional
     public void clearDatabase() {
