@@ -10,5 +10,7 @@ public interface CarService {
 
     ServiceResponse<CarDto> createCar(@NotNull CarRequest request);
 
+    Long getVendorCount();
+
     void clearData();
 }
