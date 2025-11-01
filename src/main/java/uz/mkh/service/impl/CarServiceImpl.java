@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uz.mkh.exception.CarAlreadyExistsException;
 import uz.mkh.exception.DataDoesntExistException;
 import uz.mkh.exception.InvalidAgeException;
 import uz.mkh.mapper.CarMapper;
@@ -32,6 +31,7 @@ public class CarServiceImpl implements CarService {
     private final Logger logger = LoggerFactory.getLogger(CarServiceImpl.class);
 
     @Override
+    @Transactional(readOnly = true)
     public Long getAllCount() {
         logger.info("retrieving car amount");
         List<CarEntity> carList = carRepository.findAll();
@@ -62,8 +62,4 @@ public class CarServiceImpl implements CarService {
         return ServiceResponse.createSuccess(dto);
     }
 
-    public void clearData(){
-        logger.warn("clearing car table in database");
-        carRepository.deleteAllInBatch();
-    }
 }

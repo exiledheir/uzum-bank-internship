@@ -33,6 +33,7 @@ public class PersonServiceImpl implements PersonService {
     private final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
 
     @Override
+    @Transactional(readOnly = true)
     public Long getAllCount() {
         logger.info("retrieving person amount");
         List<PersonEntity> personList = personRepository.findAll();
@@ -57,6 +58,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ServiceResponse<PersonResponse> getPersonWithCars(@NotNull Long id) {
         logger.info("retrieving person information");
         PersonEntity person = personRepository.findById(id).
@@ -76,6 +78,8 @@ public class PersonServiceImpl implements PersonService {
         return ServiceResponse.createSuccess(response);
     }
 
+    @Override
+    @Transactional
     public void clearData() {
         logger.warn("clearing person table in database");
         personRepository.deleteAllInBatch();

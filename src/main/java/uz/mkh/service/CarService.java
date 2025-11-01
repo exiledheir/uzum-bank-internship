@@ -9,6 +9,4 @@ public interface CarService {
     Long getAllCount();
 
     ServiceResponse<CarDto> createCar(@NotNull CarRequest request);
-
-    void clearData();
 }
