@@ -31,7 +31,7 @@ public class CarEntity {
     @Column(name = "horsepower")
     private Long horsePower;
     @ManyToOne
-    @JoinColumn(name = "ownerid")
+    @JoinColumn(name = "owner_id")
     private PersonEntity owner;
 
 

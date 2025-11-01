@@ -24,11 +24,7 @@ public class StatisticServiceImpl implements StatisticService {
         logger.info("retrieving statistics");
         Long carCount = carService.getAllCount();
         Long personCount = personService.getAllCount();
-        Long vendorCount = carRepository.findAll()
-                .stream()
-                .map((car) -> car.getModel().split("-")[0])
-                .distinct()
-                .count();
+        Long vendorCount = carRepository.countDistinctVendor();
         StatisticResponse response = StatisticResponse.builder()
                 .carCount(carCount)
                 .personCount(personCount)
