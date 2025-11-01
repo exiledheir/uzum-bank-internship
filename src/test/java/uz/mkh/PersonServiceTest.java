@@ -34,21 +34,18 @@ public class PersonServiceTest {
     @BeforeEach
     void setUp() {
         PersonRequest personRequest = PersonRequest.builder()
-                .id(1L)
                 .name("Mukhammadjon")
                 .birthdate(LocalDate.of(2002, 12, 30))
                 .build();
         personService.createPerson(personRequest);
 
         CarRequest request1 = CarRequest.builder()
-                .id(1L)
                 .model("Kia-K5")
                 .horsePower(399L)
                 .ownerId(1L)
                 .build();
 
         CarRequest request2 = CarRequest.builder()
-                .id(2L)
                 .model("BMW-X5")
                 .horsePower(343L)
                 .ownerId(1L)
@@ -62,7 +59,6 @@ public class PersonServiceTest {
     void createPersonSuccessful() {
         long initial = personService.getAllCount();
         PersonRequest personRequest = PersonRequest.builder()
-                .id(2L)
                 .name("Gulomjon")
                 .birthdate(LocalDate.of(2023, 12, 30))
                 .build();
@@ -74,7 +70,6 @@ public class PersonServiceTest {
     @Test
     void createExistingPerson() {
         PersonRequest personRequest = PersonRequest.builder()
-                .id(1L)
                 .name("Gulomjon")
                 .birthdate(LocalDate.of(2023, 12, 30))
                 .build();
@@ -103,7 +98,6 @@ public class PersonServiceTest {
     @Test
     void getPersonWithCars_PersonWithNoCars() {
         PersonRequest personRequest = PersonRequest.builder()
-                .id(2L)
                 .name("Gulomjon")
                 .birthdate(LocalDate.of(2002, 12, 30))
                 .build();
