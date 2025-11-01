@@ -32,6 +32,7 @@ public class CarServiceImpl implements CarService {
     private final Logger logger = LoggerFactory.getLogger(CarServiceImpl.class);
 
     @Override
+    @Transactional(readOnly = true)
     public Long getAllCount() {
         logger.info("retrieving car amount");
         List<CarEntity> carList = carRepository.findAll();
@@ -39,6 +40,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Long getVendorCount() {
         logger.info("retrieving vendor count");
         return carRepository.countDistinctVendor();
@@ -79,8 +81,4 @@ public class CarServiceImpl implements CarService {
         }
     }
 
-    public void clearData(){
-        logger.warn("clearing car table in database");
-        carRepository.deleteAllInBatch();
-    }
 }

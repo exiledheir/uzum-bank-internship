@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.mkh.model.response.ServiceResponse;
 import uz.mkh.model.response.StatisticResponse;
 import uz.mkh.service.CarService;
@@ -18,6 +19,7 @@ public class StatisticServiceImpl implements StatisticService {
     private final Logger logger = LoggerFactory.getLogger(StatisticServiceImpl.class);
 
     @Override
+    @Transactional(readOnly = true)
     public ServiceResponse<StatisticResponse> getStatistics() {
         logger.info("retrieving statistics");
         Long carCount = carService.getAllCount();
@@ -34,9 +36,9 @@ public class StatisticServiceImpl implements StatisticService {
     }
 
     @Override
+    @Transactional
     public void clearDatabase() {
         logger.warn("clearing tables in database");
-        carService.clearData();
         personService.clearData();
     }
 }

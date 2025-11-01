@@ -12,5 +12,4 @@ public interface CarService {
 
     Long getVendorCount();
 
-    void clearData();
 }

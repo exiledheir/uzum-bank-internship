@@ -33,6 +33,4 @@ public class CarEntity {
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private PersonEntity owner;
-
-
 }
