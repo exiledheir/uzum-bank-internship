@@ -8,7 +8,5 @@ import java.time.LocalDate;
 
 @Repository
 public interface PersonRepository extends JpaRepository<PersonEntity, Long> {
-    boolean existsByName(String name);
-
-    boolean existsByBirthdate(LocalDate birthdate);
+    boolean existsByNameAndBirthdate(String name, LocalDate birthdate);
 }
