@@ -31,6 +31,11 @@ public class CarServiceImpl implements CarService {
     private final CarMapper carMapper;
     private final Logger logger = LoggerFactory.getLogger(CarServiceImpl.class);
 
+    /**
+     * Fetches amount of cars from database
+     *
+     * @return Long
+     */
     @Override
     @Transactional(readOnly = true)
     public Long getAllCount() {
@@ -39,6 +44,11 @@ public class CarServiceImpl implements CarService {
         return (long) carList.size();
     }
 
+    /**
+     * Fetches distinct vendors from database
+     *
+     * @return Long
+     */
     @Override
     @Transactional(readOnly = true)
     public Long getVendorCount() {
@@ -46,6 +56,12 @@ public class CarServiceImpl implements CarService {
         return carRepository.countDistinctVendor();
     }
 
+    /**
+     * Creates car entity, validates and saves it in database
+     *
+     * @param request type CarRequest
+     * @return ServiceResponse<CarDto>
+     */
     @Override
     @Transactional
     public ServiceResponse<CarDto> createCar(@NotNull CarRequest request) {
@@ -64,6 +80,13 @@ public class CarServiceImpl implements CarService {
     }
 
 
+    /**
+     * Helper method. Validates person if he exists or not
+     *
+     * @param id type Long
+     * @return PersonEntity
+     * @throws DataDoesntExistException if person with given id is not found
+     */
     private PersonEntity validatePerson(Long id) {
         return personRepository.findById(id).
                 orElseThrow(() -> {
@@ -72,6 +95,12 @@ public class CarServiceImpl implements CarService {
                 });
     }
 
+    /**
+     * Helper method. Validates if persons age is higher than 18
+     *
+     * @param birthdate type LocalDate
+     * @throws InvalidAgeException if persons age is lower than 18
+     */
     private void validateAge(LocalDate birthdate) {
         LocalDate currentDate = LocalDate.now();
         int age = Period.between(birthdate, currentDate).getYears();
