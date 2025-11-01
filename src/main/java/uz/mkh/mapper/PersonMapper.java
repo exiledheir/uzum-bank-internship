@@ -14,6 +14,7 @@ public interface PersonMapper {
     PersonDto toDto(PersonEntity person);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "cars", ignore = true)
     PersonEntity toEntity(PersonRequest request);
 
     @Mapping(target = "cars", ignore = true)
