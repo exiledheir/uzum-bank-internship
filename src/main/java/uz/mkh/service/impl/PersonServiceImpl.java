@@ -109,7 +109,7 @@ public class PersonServiceImpl implements PersonService {
      * @throws PersonAlreadyExistsException if person with given name and birthdate already exists
      */
     private void validatePersonExist(PersonRequest request) {
-        if (personRepository.existsByName(request.getName()) && personRepository.existsByBirthdate(request.getBirthdate())) {
+        if (personRepository.existsByNameAndBirthdate(request.getName(), request.getBirthdate())) {
             logger.error("Person with name: " + request.getName() + ", birthdate: " + request.getBirthdate() + " exists");
             throw new PersonAlreadyExistsException("Person with name: " + request.getName() + ", birthdate: " + request.getBirthdate() + " exists");
         }
