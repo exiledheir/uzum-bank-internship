@@ -42,10 +42,6 @@ public class CarServiceImpl implements CarService {
     @Transactional
     public ServiceResponse<CarDto> createCar(@NotNull CarRequest request) {
         logger.info("creating car entity ");
-        if (carRepository.existsById(request.getId())) {
-            logger.error("car already exists");
-            throw new CarAlreadyExistsException("Car with id: " + request.getId() + ", already exists");
-        }
         PersonEntity person = personRepository.findById(request.getOwnerId()).
                 orElseThrow(() -> {
                     logger.error("person doesnt exists");

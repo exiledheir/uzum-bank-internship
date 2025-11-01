@@ -11,8 +11,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class CarRequest {
-    @NotNull(message = "id cant be null")
-    private Long id;
     @NotNull(message = "model cant be null")
     @NotBlank(message = "model cant be empty or blank")
     private String model;

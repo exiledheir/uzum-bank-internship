@@ -34,13 +34,11 @@ public class CarServiceTest {
     @BeforeEach
     void setUp() {
         PersonRequest personRequest = PersonRequest.builder()
-                .id(1L)
                 .name("Mukhammadjon")
                 .birthdate(LocalDate.of(2002, 12, 30))
                 .build();
 
         PersonRequest personLower18 = PersonRequest.builder()
-                .id(2L)
                 .name("Sardor")
                 .birthdate(LocalDate.of(2012, 12, 30))
                 .build();
@@ -48,7 +46,6 @@ public class CarServiceTest {
         personService.createPerson(personLower18);
 
         CarRequest car1 = CarRequest.builder()
-                .id(1L)
                 .model("Kia-K5")
                 .horsePower(399L)
                 .ownerId(1L)
@@ -61,7 +58,6 @@ public class CarServiceTest {
     void createCarSuccessful() {
         long initial = carService.getAllCount();
         CarRequest request = CarRequest.builder()
-                .id(2L)
                 .model("Kia-K5")
                 .horsePower(399L)
                 .ownerId(1L)
@@ -74,7 +70,6 @@ public class CarServiceTest {
     @Test
     void createCarWithNotExistingUser() {
         CarRequest request = CarRequest.builder()
-                .id(2L)
                 .model("Kia-K5")
                 .horsePower(399L)
                 .ownerId(100L)
@@ -89,7 +84,6 @@ public class CarServiceTest {
     @Test
     void createCarWithUserAgeLower18() {
         CarRequest request = CarRequest.builder()
-                .id(2L)
                 .model("Kia-K5")
                 .horsePower(399L)
                 .ownerId(2L)
@@ -103,7 +97,6 @@ public class CarServiceTest {
     @Test
     void createExistingCar() {
         CarRequest request = CarRequest.builder()
-                .id(1L)
                 .model("Kia-K5")
                 .horsePower(399L)
                 .ownerId(2L)

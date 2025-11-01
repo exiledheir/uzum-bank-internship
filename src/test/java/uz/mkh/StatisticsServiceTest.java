@@ -35,13 +35,11 @@ public class StatisticsServiceTest {
     @BeforeEach
     void setUp() {
         PersonRequest person1 = PersonRequest.builder()
-                .id(1L)
                 .name("Mukhammadjon")
                 .birthdate(LocalDate.of(2002, 12, 30))
                 .build();
 
         PersonRequest person2 = PersonRequest.builder()
-                .id(2L)
                 .name("Sardor")
                 .birthdate(LocalDate.of(2002, 12, 30))
                 .build();
@@ -50,28 +48,24 @@ public class StatisticsServiceTest {
         personService.createPerson(person2);
 
         CarRequest car1 = CarRequest.builder()
-                .id(1L)
                 .model("BMW-X5")
                 .horsePower(300L)
                 .ownerId(1L)
                 .build();
 
         CarRequest car2 = CarRequest.builder()
-                .id(2L)
                 .model("BMW-X3")
                 .horsePower(300L)
                 .ownerId(1L)
                 .build();
 
         CarRequest car3 = CarRequest.builder()
-                .id(3L)
                 .model("Kia-K5")
                 .horsePower(300L)
                 .ownerId(2L)
                 .build();
 
         CarRequest car4 = CarRequest.builder()
-                .id(4L)
                 .model("Kia-K3")
                 .horsePower(300L)
                 .ownerId(2L)

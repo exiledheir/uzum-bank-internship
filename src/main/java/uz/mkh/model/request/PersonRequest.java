@@ -15,8 +15,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 public class PersonRequest {
-    @NotNull(message = "id cant be null")
-    private Long id;
     @NotNull(message = "person name cant be null")
     @NotBlank(message = "Person name should not be blank")
     private String name;

@@ -15,6 +15,7 @@ public interface CarMapper {
     CarDto toDto(CarEntity carEntity);
 
     @Mapping(target = "owner", ignore = true)
+    @Mapping(target = "id", ignore = true)
     CarEntity toEntity(CarRequest request);
 
 }

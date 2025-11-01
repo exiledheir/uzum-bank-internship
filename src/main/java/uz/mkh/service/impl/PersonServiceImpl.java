@@ -43,9 +43,9 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     public ServiceResponse<PersonDto> createPerson(@NotNull PersonRequest request) {
         logger.info("creating person entity");
-        if (personRepository.existsById(request.getId())) {
-            logger.error("Person with id: " + request.getId() + " exists");
-            throw new PersonAlreadyExistsException("Person with id: " + request.getId() + ", already exists");
+        if (personRepository.existsByName(request.getName()) && personRepository.existsByBirthdate(request.getBirthdate())) {
+            logger.error("Person with name: " + request.getName() + ", birthdate: " + request.getBirthdate() + " exists");
+            throw new PersonAlreadyExistsException("Person with name: " + request.getName() + ", birthdate: " + request.getBirthdate() + " exists");
         }
 
         PersonEntity person = personMapper.toEntity(request);
@@ -70,6 +70,7 @@ public class PersonServiceImpl implements PersonService {
                 .stream()
                 .map(carMapper::toDto)
                 .toList();
+        System.out.println(person);
         response.setCars(cars);
         logger.info("person information retrieved");
         return ServiceResponse.createSuccess(response);
