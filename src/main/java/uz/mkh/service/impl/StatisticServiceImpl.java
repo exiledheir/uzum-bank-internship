@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.mkh.model.response.ServiceResponse;
 import uz.mkh.model.response.StatisticResponse;
-import uz.mkh.repository.CarRepository;
 import uz.mkh.service.CarService;
 import uz.mkh.service.PersonService;
 import uz.mkh.service.StatisticService;
@@ -17,7 +16,6 @@ import uz.mkh.service.StatisticService;
 public class StatisticServiceImpl implements StatisticService {
     private final CarService carService;
     private final PersonService personService;
-    private final CarRepository carRepository;
     private final Logger logger = LoggerFactory.getLogger(StatisticServiceImpl.class);
 
     @Override
@@ -26,7 +24,7 @@ public class StatisticServiceImpl implements StatisticService {
         logger.info("retrieving statistics");
         Long carCount = carService.getAllCount();
         Long personCount = personService.getAllCount();
-        Long vendorCount = carRepository.countDistinctVendor();
+        Long vendorCount = carService.getVendorCount();
         StatisticResponse response = StatisticResponse.builder()
                 .carCount(carCount)
                 .personCount(personCount)

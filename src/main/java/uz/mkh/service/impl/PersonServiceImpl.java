@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import uz.mkh.exception.DataDoesntExistException;
 import uz.mkh.exception.PersonAlreadyExistsException;
-import uz.mkh.exception.PersonNotFoundException;
 import uz.mkh.mapper.CarMapper;
 import uz.mkh.mapper.PersonMapper;
 import uz.mkh.model.dto.CarDto;
@@ -44,10 +44,7 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     public ServiceResponse<PersonDto> createPerson(@NotNull PersonRequest request) {
         logger.info("creating person entity");
-        if (personRepository.existsByName(request.getName()) && personRepository.existsByBirthdate(request.getBirthdate())) {
-            logger.error("Person with name: " + request.getName() + ", birthdate: " + request.getBirthdate() + " exists");
-            throw new PersonAlreadyExistsException("Person with name: " + request.getName() + ", birthdate: " + request.getBirthdate() + " exists");
-        }
+        validatePersonExist(request);
 
         PersonEntity person = personMapper.toEntity(request);
         person = personRepository.save(person);
@@ -61,21 +58,31 @@ public class PersonServiceImpl implements PersonService {
     @Transactional(readOnly = true)
     public ServiceResponse<PersonResponse> getPersonWithCars(@NotNull Long id) {
         logger.info("retrieving person information");
-        PersonEntity person = personRepository.findById(id).
-                orElseThrow(() -> {
-                    logger.error("person doesnt exists");
-                    return new PersonNotFoundException("Person with id: " + id + ", not found");
-                });
+        PersonEntity person = validatePerson(id);
 
         PersonResponse response = personMapper.toResponse(person);
         List<CarDto> cars = carRepository.findCarByOwnerIdIs(id)
                 .stream()
                 .map(carMapper::toDto)
                 .toList();
-        System.out.println(person);
         response.setCars(cars);
+
         logger.info("person information retrieved");
         return ServiceResponse.createSuccess(response);
+    }
+
+    private PersonEntity validatePerson(Long id) {
+        return personRepository.findById(id).orElseThrow(() -> {
+            logger.error("person doesnt exists");
+            return new DataDoesntExistException("Person with id: " + id + ", doesnt exists");
+        });
+    }
+
+    private void validatePersonExist(PersonRequest request) {
+        if (personRepository.existsByName(request.getName()) && personRepository.existsByBirthdate(request.getBirthdate())) {
+            logger.error("Person with name: " + request.getName() + ", birthdate: " + request.getBirthdate() + " exists");
+            throw new PersonAlreadyExistsException("Person with name: " + request.getName() + ", birthdate: " + request.getBirthdate() + " exists");
+        }
     }
 
     @Override
